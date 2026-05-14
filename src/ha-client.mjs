@@ -28,7 +28,8 @@ export function parseWebSocketMessage(data) {
 }
 
 export function connectToHomeAssistant({ baseUrl, token, onStatus, onEntities, onError }) {
-  const ws = new WebSocket(buildWebSocketUrl(baseUrl));
+  const endpoint = buildWebSocketUrl(baseUrl);
+  const ws = new WebSocket(endpoint);
 
   ws.addEventListener("open", () => {
     onStatus("Connected. Waiting for authentication...");
@@ -65,9 +66,8 @@ export function connectToHomeAssistant({ baseUrl, token, onStatus, onEntities, o
     }
   });
 
-  ws.addEventListener("error", (event) => {
-    const details = typeof event?.message === "string" && event.message ? ` ${event.message}` : "";
-    onError(`WebSocket connection error.${details}`);
+  ws.addEventListener("error", () => {
+    onError(`WebSocket connection error while connecting to ${endpoint}.`);
   });
 
   ws.addEventListener("close", () => {
