@@ -71,7 +71,7 @@ export function connectToHomeAssistant({ baseUrl, token, onStatus, onEntities, o
   });
 
   ws.addEventListener("close", () => {
-    onStatus("Disconnected");
+    onStatus("Disconnected.");
   });
 
   return {
