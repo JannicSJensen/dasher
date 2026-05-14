@@ -1,6 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { buildWebSocketUrl, connectToHomeAssistant, mapEntityStates, parseWebSocketMessage } from "../src/ha-client.mjs";
+import {
+  buildWebSocketUrl,
+  connectToHomeAssistant,
+  mapEntityStates,
+  mapRoomsDashboard,
+  parseWebSocketMessage,
+} from "../src/ha-client.mjs";
 
 test("buildWebSocketUrl converts HTTP URL to WS endpoint", () => {
   assert.equal(buildWebSocketUrl("http://homeassistant.local:8123"), "ws://homeassistant.local:8123/api/websocket");
@@ -26,6 +32,33 @@ test("mapEntityStates prefers friendly names and sorts labels", () => {
 
 test("parseWebSocketMessage returns undefined for malformed payloads", () => {
   assert.equal(parseWebSocketMessage("{not-json"), undefined);
+});
+
+test("mapRoomsDashboard groups entities into Home Assistant areas", () => {
+  const rooms = mapRoomsDashboard({
+    states: [
+      { entity_id: "light.kitchen", state: "on", attributes: { friendly_name: "Kitchen Light" } },
+      { entity_id: "sensor.outdoor_temp", state: "12", attributes: { friendly_name: "Outdoor Temp" } },
+    ],
+    areas: [{ area_id: "kitchen", name: "Kitchen" }],
+    entityRegistry: [
+      { entity_id: "light.kitchen", area_id: "kitchen" },
+      { entity_id: "sensor.outdoor_temp", area_id: null },
+    ],
+  });
+
+  assert.deepEqual(rooms, [
+    {
+      id: "kitchen",
+      name: "Kitchen",
+      entities: [{ entityId: "light.kitchen", label: "Kitchen Light", state: "on" }],
+    },
+    {
+      id: "unassigned",
+      name: "Unassigned",
+      entities: [{ entityId: "sensor.outdoor_temp", label: "Outdoor Temp", state: "12" }],
+    },
+  ]);
 });
 
 test("connectToHomeAssistant authenticates and loads states", (t) => {
@@ -64,14 +97,14 @@ test("connectToHomeAssistant authenticates and loads states", (t) => {
   });
 
   const statuses = [];
-  const entitiesEvents = [];
+  const dashboardEvents = [];
   const errors = [];
 
   connectToHomeAssistant({
     baseUrl: "http://homeassistant.local:8123",
     token: "abc123",
     onStatus: (message) => statuses.push(message),
-    onEntities: (entities) => entitiesEvents.push(entities),
+    onDashboard: (rooms) => dashboardEvents.push(rooms),
     onError: (message) => errors.push(message),
   });
 
@@ -79,6 +112,16 @@ test("connectToHomeAssistant authenticates and loads states", (t) => {
   socket.emit("open");
   socket.emit("message", { data: JSON.stringify({ type: "auth_required" }) });
   socket.emit("message", { data: JSON.stringify({ type: "auth_ok" }) });
+  socket.emit("message", {
+    data: JSON.stringify({ type: "result", id: 2, result: [{ area_id: "kitchen", name: "Kitchen" }] }),
+  });
+  socket.emit("message", {
+    data: JSON.stringify({
+      type: "result",
+      id: 3,
+      result: [{ entity_id: "light.kitchen", area_id: "kitchen" }],
+    }),
+  });
   socket.emit("message", {
     data: JSON.stringify({
       type: "result",
@@ -90,8 +133,18 @@ test("connectToHomeAssistant authenticates and loads states", (t) => {
   assert.deepEqual(socket.sent, [
     JSON.stringify({ type: "auth", access_token: "abc123" }),
     JSON.stringify({ id: 1, type: "get_states" }),
+    JSON.stringify({ id: 2, type: "config/area_registry/list" }),
+    JSON.stringify({ id: 3, type: "config/entity_registry/list" }),
   ]);
-  assert.deepEqual(entitiesEvents, [[{ entityId: "light.kitchen", label: "Kitchen", state: "on" }]]);
+  assert.deepEqual(dashboardEvents, [
+    [
+      {
+        id: "kitchen",
+        name: "Kitchen",
+        entities: [{ entityId: "light.kitchen", label: "Kitchen", state: "on" }],
+      },
+    ],
+  ]);
   assert.deepEqual(errors, []);
   assert.equal(statuses.at(-1), "Connected.");
 });
@@ -136,7 +189,6 @@ test("connectToHomeAssistant reports auth failures and closes socket", (t) => {
     baseUrl: "http://homeassistant.local:8123",
     token: "abc123",
     onStatus: () => {},
-    onEntities: () => {},
     onError: (message) => errors.push(message),
   });
 

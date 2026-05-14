@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dasher Settings</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #0f172a;
+        color: #e2e8f0;
+      }
+
+      main {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+
+      .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .back-link {
+        color: #93c5fd;
+      }
+
+      .back-link:hover {
+        color: #bfdbfe;
+      }
+
+      form {
+        margin-top: 1rem;
+        display: grid;
+        gap: 0.75rem;
+        background: #1e293b;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border: 1px solid #334155;
+      }
+
+      label {
+        display: grid;
+        gap: 0.25rem;
+      }
+
+      input {
+        padding: 0.5rem;
+        border: 1px solid #334155;
+        border-radius: 0.375rem;
+        background: #0f172a;
+        color: #e2e8f0;
+      }
+
+      button {
+        width: fit-content;
+        padding: 0.5rem 1rem;
+        background: #2563eb;
+        color: #fff;
+        border: 0;
+        border-radius: 0.375rem;
+        cursor: pointer;
+      }
+
+      .status {
+        margin-top: 1rem;
+        font-weight: 700;
+        color: #bfdbfe;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="header-row">
+        <h1>Settings</h1>
+        <a class="back-link" href="./index.html">Dashboard</a>
+      </div>
+      <form id="settings-form">
+        <label>
+          Home Assistant URL
+          <input id="base-url" type="url" required placeholder="http://homeassistant.local:8123" />
+        </label>
+        <label>
+          Long-lived access token
+          <input id="access-token" type="password" required />
+        </label>
+        <button type="submit">Save settings</button>
+      </form>
+      <p id="status" class="status"></p>
+    </main>
+    <script type="module" src="./src/settings.mjs"></script>
+  </body>
+</html>
