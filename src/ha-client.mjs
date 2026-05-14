@@ -19,6 +19,14 @@ export function mapEntityStates(states) {
     .sort((a, b) => a.label.localeCompare(b.label));
 }
 
+export function parseWebSocketMessage(data) {
+  try {
+    return JSON.parse(data);
+  } catch {
+    return undefined;
+  }
+}
+
 export function connectToHomeAssistant({ baseUrl, token, onStatus, onEntities, onError }) {
   const ws = new WebSocket(buildWebSocketUrl(baseUrl));
 
@@ -27,7 +35,11 @@ export function connectToHomeAssistant({ baseUrl, token, onStatus, onEntities, o
   });
 
   ws.addEventListener("message", (event) => {
-    const message = JSON.parse(event.data);
+    const message = parseWebSocketMessage(event.data);
+    if (!message) {
+      onError("Received malformed WebSocket message.");
+      return;
+    }
 
     if (message.type === "auth_required") {
       ws.send(JSON.stringify({ type: "auth", access_token: token }));
@@ -53,8 +65,9 @@ export function connectToHomeAssistant({ baseUrl, token, onStatus, onEntities, o
     }
   });
 
-  ws.addEventListener("error", () => {
-    onError("WebSocket connection error.");
+  ws.addEventListener("error", (event) => {
+    const details = typeof event?.message === "string" && event.message ? ` ${event.message}` : "";
+    onError(`WebSocket connection error.${details}`);
   });
 
   ws.addEventListener("close", () => {

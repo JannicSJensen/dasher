@@ -4,7 +4,7 @@ Minimal Home Assistant dashboard that connects through the Home Assistant WebSoc
 
 ## Usage
 
-1. Open `/home/runner/work/dasher/dasher/index.html` in a browser.
+1. Open `index.html` in a browser.
 2. Enter your Home Assistant URL (for example `http://homeassistant.local:8123`).
 3. Enter a long-lived access token.
 4. Click **Connect**.

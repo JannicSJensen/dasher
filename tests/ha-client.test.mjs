@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { buildWebSocketUrl, mapEntityStates } from "../src/ha-client.mjs";
+import { buildWebSocketUrl, mapEntityStates, parseWebSocketMessage } from "../src/ha-client.mjs";
 
 test("buildWebSocketUrl converts HTTP URL to WS endpoint", () => {
   assert.equal(buildWebSocketUrl("http://homeassistant.local:8123"), "ws://homeassistant.local:8123/api/websocket");
@@ -20,4 +20,8 @@ test("mapEntityStates prefers friendly names and sorts labels", () => {
     { entityId: "light.kitchen", label: "Kitchen", state: "on" },
     { entityId: "sensor.outside_temp", label: "sensor.outside_temp", state: "19" },
   ]);
+});
+
+test("parseWebSocketMessage returns undefined for malformed payloads", () => {
+  assert.equal(parseWebSocketMessage("{not-json"), undefined);
 });
