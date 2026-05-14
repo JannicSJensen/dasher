@@ -1,3 +1,5 @@
+const GET_STATES_REQUEST_ID = 1;
+
 export function buildWebSocketUrl(baseUrl) {
   const normalized = baseUrl.trim().replace(/\/+$/, "");
   if (!normalized) {
@@ -49,7 +51,7 @@ export function connectToHomeAssistant({ baseUrl, token, onStatus, onEntities, o
     }
 
     if (message.type === "auth_ok") {
-      ws.send(JSON.stringify({ id: 1, type: "get_states" }));
+      ws.send(JSON.stringify({ id: GET_STATES_REQUEST_ID, type: "get_states" }));
       onStatus("Authenticated. Loading entities...");
       return;
     }
@@ -60,7 +62,7 @@ export function connectToHomeAssistant({ baseUrl, token, onStatus, onEntities, o
       return;
     }
 
-    if (message.type === "result" && message.id === 1 && Array.isArray(message.result)) {
+    if (message.type === "result" && message.id === GET_STATES_REQUEST_ID && Array.isArray(message.result)) {
       onEntities(mapEntityStates(message.result));
       onStatus("Connected.");
     }
