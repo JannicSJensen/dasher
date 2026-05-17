@@ -1,12 +1,40 @@
 # dasher
 
-Minimal Home Assistant dashboard that connects through the Home Assistant WebSocket API.
+Custom Home Assistant dashboard som Single Page Application i vanilla JavaScript.
+Ingen frameworks, ingen bundler, ingen npm dependencies.
 
-## Usage
+## Brug
 
-1. Open `settings.html` in a browser.
-2. Enter your Home Assistant URL (for example `http://homeassistant.local:8123`).
-3. Enter a long-lived access token and save.
-4. Open `index.html` and click **Connect**.
+1. Start en statisk webserver i projektroden:
+   ```sh
+   python3 -m http.server 8000
+   ```
+2. Åbn http://localhost:8000 i en browser.
+3. Gå til **Indstillinger** og indtast Home Assistant URL og long-lived access token.
+4. Tryk **Gem og forbind**.
 
-The dashboard authenticates over `/api/websocket`, loads Home Assistant areas and entity assignments, and renders a classic room-based welcome view with room navigation.
+## Struktur
+
+```
+index.html          SPA shell
+styles/             tokens, base, layout, components
+js/
+  main.js           bootstrap
+  config.js         konstanter (ruter, WS request IDs, feature flags)
+  core/             BaseComponent, Store, Router, EventBus, html helper
+  services/         HAClient, HACommands, SettingsService, EntityService, MediaService
+  state/            initialState, actions, selectors
+  pages/            Oversigt, Musik, Bil, Fest, Indstillinger
+  components/
+    ui/             Button, Card, Toggle, Slider
+    layout/         Header, Sidebar, PageContainer
+    features/       EntityCard, LightCard, SensorCard, MediaPlayer, CarCard
+  utils/            dom, format, icons, throttle
+tests/              node:test unit tests
+```
+
+## Test
+
+```sh
+node --test
+```

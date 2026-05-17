@@ -1,0 +1,125 @@
+/* =====================================================================
+ * Theme overrides. Switch with `document.body.dataset.theme = "light"`.
+ * Components ONLY read semantic tokens (--color-*, --shadow-*, ...).
+ * ===================================================================== */
+
+/* ---- Dark (default) ---- */
+body[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-bg-0: #070a1c;
+  --color-bg-1: #0b1024;
+  --color-bg-2: #131a36;
+
+  --color-surface:    rgba(27, 35, 72, 0.85);
+  --color-surface-2:  rgba(19, 26, 54, 0.85);
+
+  --color-border:        rgba(148, 163, 184, 0.15);
+  --color-border-strong: rgba(148, 163, 184, 0.3);
+
+  --color-text-0: var(--c-slate-100);
+  --color-text-1: var(--c-slate-300);
+  --color-text-2: var(--c-slate-400);
+
+  --color-accent:   var(--c-blue-400);
+  --color-accent-2: var(--c-violet-500);
+  --gradient-accent: linear-gradient(135deg, var(--c-blue-600), var(--c-violet-600));
+
+  --shadow-md: 0 10px 24px rgba(2, 6, 23, 0.45);
+}
+
+/* ---- Light ---- */
+body[data-theme="light"] {
+  color-scheme: light;
+
+  --color-bg-0: #f4f6fb;
+  --color-bg-1: #eef1f7;
+  --color-bg-2: #ffffff;
+
+  --color-surface:   rgba(255, 255, 255, 0.92);
+  --color-surface-2: rgba(248, 250, 252, 0.95);
+
+  --color-border:        rgba(15, 23, 42, 0.08);
+  --color-border-strong: rgba(15, 23, 42, 0.18);
+
+  --color-text-0: var(--c-slate-900);
+  --color-text-1: var(--c-slate-700);
+  --color-text-2: var(--c-slate-500);
+
+  --color-accent:   var(--c-blue-600);
+  --color-accent-2: var(--c-violet-600);
+  --gradient-accent: linear-gradient(135deg, var(--c-blue-500), var(--c-violet-500));
+
+  --shadow-md: 0 10px 24px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 20px 40px rgba(15, 23, 42, 0.12);
+}
+
+/* ---- Party (UI flair) ---- */
+body[data-theme="party"] {
+  color-scheme: dark;
+
+  --color-bg-0: #1a0420;
+  --color-bg-1: #240a3a;
+  --color-bg-2: #36105c;
+
+  --color-accent:   var(--c-pink-400);
+  --color-accent-2: var(--c-amber-400);
+  --gradient-accent: linear-gradient(135deg, var(--c-pink-400), var(--c-amber-400));
+}
+
+/* ---- Warm ----
+ * Inspireret af Dribbble shot #26936904 ("Interactive Smart Home Dashboard
+ * with Home Assistant Integration"): varm cream baggrund, bløde pasteller
+ * (peach + sage), mørk navy tekst, store afrundede tiles. Lavt kontrast-
+ * niveau på borders for at undgå støj, men solid text-kontrast for
+ * læsbarhed (WCAG AA på primær tekst).
+ */
+body[data-theme="warm"] {
+  color-scheme: light;
+
+  /* Cream/sand baggrund */
+  --color-bg-0: #f1ead8;
+  --color-bg-1: #f6f0e0;
+  --color-bg-2: #fbf7eb;
+
+  /* Halvtransparente off-white overflader til glassmorph-tiles */
+  --color-surface:   rgba(255, 250, 238, 0.92);
+  --color-surface-2: rgba(252, 247, 234, 0.96);
+
+  --color-border:        rgba(60, 40, 24, 0.08);
+  --color-border-strong: rgba(60, 40, 24, 0.18);
+
+  /* Dyb varm navy som primær tekst — typisk for denne stil */
+  --color-text-0: #2a2540;
+  --color-text-1: #4a4664;
+  --color-text-2: #7c7796;
+
+  /* Pastel accents: peach primær, sage sekundær */
+  --color-accent:   #ef8a6a;   /* warm peach/coral */
+  --color-accent-2: #94b89a;   /* sage green */
+  --gradient-accent: linear-gradient(135deg, #ef8a6a, #f4b27a);
+
+  /* Status-farver i samme palette */
+  --color-success: #6fa97a;
+  --color-warning: #e2a648;
+  --color-danger:  #d6695e;
+  --color-info:    #6ea6c6;
+
+  /* Større blødere skygger — lyseste tema "løfter" tiles mere */
+  --shadow-sm: 0 4px 12px rgba(60, 40, 24, 0.06);
+  --shadow-md: 0 14px 28px rgba(60, 40, 24, 0.08);
+  --shadow-lg: 0 24px 48px rgba(60, 40, 24, 0.12);
+}
+
+/* Subtile warm-specifikke justeringer der ikke kan udtrykkes som tokens. */
+body[data-theme="warm"] .tile {
+  border-radius: 26px;
+}
+body[data-theme="warm"] .tile.is-on .tile-state {
+  color: rgba(255, 255, 255, 0.92);
+}
+/* Mindre blur i warm tema — glasset må ikke "vaske" den varme baggrund ud. */
+body[data-theme="warm"] .glass {
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+}

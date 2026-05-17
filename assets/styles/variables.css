@@ -1,0 +1,118 @@
+/* =====================================================================
+ * Design tokens.
+ * These are the *only* primitive values used throughout the app.
+ * Themes (themes.css) override the semantic tokens — never touch the raw
+ * palette here from a component.
+ * ===================================================================== */
+
+:root {
+  /* ---- Raw color palette (do not use directly in components) ---- */
+  --c-blue-400: #60a5fa;
+  --c-blue-500: #3b82f6;
+  --c-blue-600: #2563eb;
+  --c-violet-500: #8b5cf6;
+  --c-violet-600: #7c3aed;
+  --c-cyan-400: #22d3ee;
+  --c-pink-400: #f472b6;
+  --c-amber-400: #fbbf24;
+  --c-emerald-400: #34d399;
+  --c-emerald-500: #10b981;
+  --c-rose-400: #f87171;
+  --c-rose-500: #ef4444;
+
+  --c-slate-0:  #ffffff;
+  --c-slate-50: #f8fafc;
+  --c-slate-100:#f1f5f9;
+  --c-slate-200:#e2e8f0;
+  --c-slate-300:#cbd5e1;
+  --c-slate-400:#94a3b8;
+  --c-slate-500:#64748b;
+  --c-slate-600:#475569;
+  --c-slate-700:#334155;
+  --c-slate-800:#1e293b;
+  --c-slate-900:#0f172a;
+  --c-slate-950:#020617;
+
+  /* ---- Semantic tokens (consumed by components & themes.css) ---- */
+  --color-bg-0: #070a1c;
+  --color-bg-1: #0b1024;
+  --color-bg-2: #131a36;
+  --color-surface: rgba(27, 35, 72, 0.85);
+  --color-surface-2: rgba(19, 26, 54, 0.85);
+
+  --color-border: rgba(148, 163, 184, 0.15);
+  --color-border-strong: rgba(148, 163, 184, 0.3);
+
+  --color-text-0: var(--c-slate-100);
+  --color-text-1: var(--c-slate-300);
+  --color-text-2: var(--c-slate-400);
+
+  --color-accent: var(--c-blue-400);
+  --color-accent-2: var(--c-violet-500);
+  --gradient-accent: linear-gradient(135deg, var(--c-blue-600), var(--c-violet-600));
+
+  --color-success: var(--c-emerald-400);
+  --color-warning: var(--c-amber-400);
+  --color-danger:  var(--c-rose-400);
+  --color-info:    var(--c-blue-400);
+
+  /* ---- Spacing scale (4pt rhythm) ---- */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-7: 2rem;
+  --space-8: 2.5rem;
+
+  /* ---- Radius ---- */
+  --radius-sm: 0.4rem;
+  --radius-md: 0.6rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-pill: 999px;
+
+  /* ---- Shadows / elevation ---- */
+  --shadow-sm: 0 2px 6px rgba(2, 6, 23, 0.35);
+  --shadow-md: 0 10px 24px rgba(2, 6, 23, 0.45);
+  --shadow-lg: 0 20px 40px rgba(2, 6, 23, 0.55);
+  --shadow-glow: 0 0 0 4px rgba(96, 165, 250, 0.18);
+
+  /* ---- Typography ---- */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
+               Arial, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.85rem;
+  --fs-md: 0.95rem;
+  --fs-lg: 1.1rem;
+  --fs-xl: 1.4rem;
+  --fs-2xl: 1.8rem;
+  --fs-3xl: 2.25rem;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* ---- Layout ---- */
+  --sidebar-w: 240px;
+  --topbar-h: 64px;
+  --bottomnav-h: 64px;
+  --content-max: 1400px;
+
+  /* ---- Motion ---- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 360ms;
+
+  /* ---- Z-index scale ---- */
+  --z-sticky: 10;
+  --z-overlay: 50;
+  --z-toast: 100;
+}
